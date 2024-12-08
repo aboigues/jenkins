@@ -1,0 +1,24 @@
+
+
+services:
+  jenkins:
+    build: .
+    image: jenkins/jenkins:2.479.2-lts-jdk17
+    container_name: jenkins
+    user: root # Nécessaire pour accéder au socket Docker
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home # Persistance des données Jenkins
+      - /var/run/docker.sock:/var/run/docker.sock # Accès au socket Docker
+      - ./jenkins-dockerfile:/var/jenkins_home/workspace # Workspace Jenkins
+    environment:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+      JENKINS_USER: admin
+      JENKINS_PASS: admin
+
+volumes:
+  jenkins_home:
+
+
